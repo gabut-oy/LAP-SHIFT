@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Keuangan Shift</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>Keuangan<span>Shift</span></h2>
+        <p class="menu-label">MENU UTAMA</p>
+        <nav>
+            <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+            <button class="nav-btn" data-page="transaksi">Transaksi</button>
+            <button class="nav-btn" data-page="shift">Manajemen Shift</button>
+            <button class="nav-btn" data-page="laporan">Laporan Bulanan</button>
+        </nav>
+        <div class="sidebar-footer">Sistem Monitoring Keuangan</div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <h1 id="page-title">Dashboard</h1>
+                <p id="today"></p>
+            </div>
+            <span class="status-badge">Sistem Aktif</span>
+        </header>
+
+        <section id="dashboard" class="page">
+            <div class="welcome">
+                <h2>Ringkasan Keuangan</h2>
+                <p>Pantau transaksi dan kondisi kas usaha Kamu.</p>
+            </div>
+
+            <div class="stats">
+                <article class="stat-card">
+                    <p>Pemasukan Hari Ini</p>
+                    <h2 id="income-today">Rp0</h2>
+                </article>
+                <article class="stat-card">
+                    <p>Pengeluaran Hari Ini</p>
+                    <h2 id="expense-today">Rp0</h2>
+                </article>
+                <article class="stat-card">
+                    <p>Saldo Bersih Hari Ini</p>
+                    <h2 id="net-today">Rp0</h2>
+                </article>
+                <article class="stat-card">
+                    <p>Selisih Kas Hari Ini</p>
+                    <h2 id="difference-today">Rp0</h2>
+                </article>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>Transaksi Terbaru</h2>
+                    <button class="btn" onclick="showPage('transaksi')">
+                        Tambah Transaksi
+                    </button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Jenis</th>
+                                <th>Keterangan</th>
+                                <th>Metode</th>
+                                <th>Nominal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-transactions"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="transaksi" class="page hidden">
+            <div class="panel">
+                <h2>Input Transaksi</h2>
+                <form id="transaction-form" class="form-grid">
+                    <label>
+                        Tanggal
+                        <input type="date" id="transaction-date" required>
+                    </label>
+                    <label>
+                        Jenis Transaksi
+                        <select id="transaction-type" required>
+                            <option value="pemasukan">Pemasukan</option>
+                            <option value="pengeluaran">Pengeluaran</option>
+                        </select>
+                    </label>
+                    <label>
+                        Kategori
+                        <input id="transaction-category" placeholder="Contoh: Penjualan" required>
+                    </label>
+                    <label>
+                        Metode Pembayaran
+                        <select id="transaction-method" required>
+                            <option value="Tunai">Tunai</option>
+                            <option value="Transfer">Transfer</option>
+                            <option value="QRIS">QRIS</option>
+                        </select>
+                    </label>
+                    <label>
+                        Nama Petugas
+                        <input id="transaction-staff" placeholder="Nama petugas" required>
+                    </label>
+                    <label>
+                        Nominal (Rp)
+                        <input type="number" id="transaction-amount"
+                               min="1" step="1" placeholder="150000" required>
+                    </label>
+                    <label class="full-width">
+                        Keterangan
+                        <input id="transaction-description" placeholder="Detail transaksi">
+                    </label>
+                    <div class="full-width">
+                        <button class="btn" type="submit">Simpan Transaksi</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>Riwayat Transaksi</h2>
+                <input id="transaction-search" placeholder="Cari kategori, petugas, atau keterangan...">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Jenis</th>
+                                <th>Kategori</th>
+                                <th>Metode</th>
+                                <th>Petugas</th>
+                                <th>Nominal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-transactions"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="shift" class="page hidden">
+            <div class="panel">
+                <h2>Buka Shift Baru</h2>
+                <form id="shift-form" class="form-grid">
+                    <label>
+                        Tanggal Operasional
+                        <input type="date" id="shift-date" required>
+                    </label>
+                    <label>
+                        Nama Shift
+                        <select id="shift-name">
+                            <option>Shift 1</option>
+                            <option>Shift 2</option>
+                            <option>Shift 3</option>
+                        </select>
+                    </label>
+                    <label>
+                        Nama Petugas
+                        <input id="shift-staff" required>
+                    </label>
+                    <label>
+                        Modal Awal Kas (Rp)
+                        <input type="number" id="shift-opening" min="0" step="1" value="0" required>
+                    </label>
+                    <div class="full-width">
+                        <button class="btn" type="submit">Buka Shift</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>Riwayat dan Status Shift</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Shift</th>
+                                <th>Petugas</th>
+                                <th>Modal Awal</th>
+                                <th>Status</th>
+                                <th>Saldo Harapan</th>
+                                <th>Uang Aktual</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shift-list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="laporan" class="page hidden">
+            <div class="panel">
+                <h2>Rekap Laporan Bulanan</h2>
+                <div class="report-filter">
+                    <label>
+                        Bulan
+                        <input type="month" id="report-month">
+                    </label>
+                    <button class="btn" id="export-csv">Ekspor Transaksi CSV</button>
+                    <button class="btn btn-secondary" id="print-report">Cetak Laporan</button>
+                </div>
+
+                <div class="stats">
+                    <article class="stat-card">
+                        <p>Total Pemasukan</p>
+                        <h2 id="month-income">Rp0</h2>
+                    </article>
+                    <article class="stat-card">
+                        <p>Total Pengeluaran</p>
+                        <h2 id="month-expense">Rp0</h2>
+                    </article>
+                    <article class="stat-card">
+                        <p>Selisih Pemasukan dan Pengeluaran</p>
+                        <h2 id="month-net">Rp0</h2>
+                    </article>
+                    <article class="stat-card">
+                        <p>Jumlah Shift Selesai</p>
+                        <h2 id="month-shifts">0</h2>
+                    </article>
+                </div>
+
+                <h3>Rekap Per Hari</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Pemasukan</th>
+                                <th>Pengeluaran</th>
+                                <th>Saldo Bersih</th>
+                            </tr>
+                        </thead>
+                        <tbody id="daily-report"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer>Monitoring Keuangan Shift &copy; 2026</footer>
+    </main>
+
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
